@@ -13,14 +13,14 @@ class AuthController extends Controller
 {
     //validaciones al registrarse un usuario
     private $rulesRegister = array(
-        'nickname' => 'required|unique:users,nickname',
+        'username' => 'required|unique:users,username',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|min:8',
     );
     //mensages de las validaciones al registrarse un usuario
     private $messagesRegister = array(
-        'nickname.required' => 'Nickname Required',
-        'nickname.unique' => 'Nickname in Use',
+        'username.required' => 'Username Required',
+        'username.unique' => 'Username in Use',
         'email.required' => 'Email Required',
         'email.email' => 'It must be Email type',
         'email.unique' => 'Email en Use',
@@ -29,13 +29,12 @@ class AuthController extends Controller
     );
     //validaciones al logearse un usuario
     private $rulesLogin = array(
-        'email' => 'required|email',
+        'username' => 'required',
         'password' => 'required',
     );
     //mensages de las validaciones al logearse un usuario
     private $messagesLogin = array(
-        'email.required' => 'Email Required',
-        'email.email' => 'It must be Email type',
+        'username.required' => 'Username Required',
         'password.required' => 'Password Required',
     );
 
@@ -52,7 +51,7 @@ class AuthController extends Controller
             }
 
             $user = new User([
-                'nickname' => $request->nickname,
+                'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
@@ -82,10 +81,10 @@ class AuthController extends Controller
                 ], 422);
             }
 
-            $user = User::where('email', '=', $request->email)->first();
+            $user = User::where('username', '=', $request->username)->first();
             if (!$user) {
                 return response()->json([
-                    'message' => 'Unregistered user or incorrect email'
+                    'message' => 'Unregistered User or Incorrect Username' //ver que dice
                 ], 203);
             }
 
